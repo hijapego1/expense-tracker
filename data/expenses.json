@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "1771604200000",
+    "amount": 125,
+    "type": "parking",
+    "description": "Parking at 健力工業大廈",
+    "date": "2025-11-28",
+    "receiptFilename": "receipt_2025-11-28_parking.jpg",
+    "receiptPath": "/receipts/receipt_2025-11-28_parking.jpg",
+    "createdAt": "2026-02-20T16:43:20.000Z"
+  }
+]
