@@ -69,7 +69,7 @@ export default async function handler(req, res) {
             }
         }
         
-        const { amount, type, description, date, receiptImage, receiptFilename } = body;
+        const { amount, type, description, date, job, receiptImage, receiptFilename } = body;
 
         if (!amount || !type) {
             res.status(400).json({ error: 'Amount and type are required' });
@@ -95,6 +95,7 @@ export default async function handler(req, res) {
             type,
             description: description || '',
             date: date || new Date().toISOString().split('T')[0],
+            job: job || 'General',  // Job/project name
             receiptFilename: savedFilename,
             receiptPath: receiptPath ? `/receipts/${savedFilename}` : null,
             createdAt: new Date().toISOString()

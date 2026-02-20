@@ -1,15 +1,15 @@
-# Expense Tracker v1.01 for Sum
+# Expense Tracker v1.02 for Sum
 
 ## What It Does
 
-Tracks company expenses from receipt photos with **local storage**:
+Tracks company expenses from receipt photos with **job/project tracking**:
 - You send receipt photos via Telegram
-- I **store the photo locally** on your Mac Mini + extract data
-- View expenses and receipt photos in the web app
-- Organize by date for tax records
+- Add **job/project name** in caption (e.g., "Steph Song project")
+- I **store the photo locally** + extract data + tag with job
+- View expenses grouped by job
 - Export to CSV for Excel
 
-**Future v2.0:** A4 PDF generation for printing/filing
+**Quick Confirm:** Y = Yes, N = No
 
 ## Expense Types
 
@@ -22,19 +22,41 @@ Tracks company expenses from receipt photos with **local storage**:
 
 ## How to Use
 
-1. **Photo receipt** with phone
-2. **Send to me on Telegram** (say "save this receipt")
-3. **I store**: Photo locally + extract data from receipt
-4. **View**: Open the app URL to see expenses + receipt photos
-5. **Export**: Download CSV for Excel
-6. **Future**: Generate A4 PDF pages (v2.0)
+### Sending Receipts
 
-## v1.01 Features
+**With Job/Project:**
+1. Photo receipt
+2. **Add caption:** "Steph Song project" (or any job name)
+3. Send to hijapego on Telegram
+4. I ask: "Save? (Y/N)"
+5. Reply **Y** → Saved with job tag
 
-- ✅ **Local receipt storage** - Photos saved on your Mac Mini
-- ✅ **Receipt image display** - View photos in web app
-- ✅ **Date organization** - Sort by date for tax records
-- ✅ **CSV Export** - Excel compatible
+**Without Job (General):**
+1. Photo receipt
+2. Send without caption (or just "receipt")
+3. I ask: "Save? (Y/N)"
+4. Reply **Y** → Saved as General expense
+
+### Quick Commands
+
+- **Y** = Yes, save it
+- **N** = No, need to amend/cancel
+
+### Viewing
+
+- **Web app:** https://expense-tracker-fndu.vercel.app/
+- **By Job:** Expenses grouped by project
+- **By Type:** Dining, Parking, etc.
+- **Export:** CSV with job column for Excel
+
+## v1.02 Features
+
+- ✅ **Quick confirm:** Y/N instead of typing "yes"
+- ✅ **Job/Project tracking:** Caption = job name
+- ✅ **Local receipt storage:** Photos saved on Mac Mini
+- ✅ **Receipt image display:** View photos in web app
+- ✅ **Job grouping:** See expenses by project
+- ✅ **CSV Export:** Excel compatible with job column
 
 ## Storage Location
 
@@ -48,17 +70,31 @@ Data is stored at:
 /Users/hijapego/.openclaw/workspace/expense-tracker/data/expenses.json
 ```
 
+## Example Workflows
+
+**Job Expense:**
+- Caption: "Steph Song project"
+- Amount: $150
+- Type: Dining
+- Result: Tagged with "Steph Song project"
+
+**General Expense:**
+- Caption: (none)
+- Amount: $50
+- Type: Parking
+- Result: Tagged as "General"
+
 ## Tech Stack
 
 - Frontend: HTML + JavaScript
 - Backend: Node.js (Serverless)
 - Storage: Local filesystem (Mac Mini)
-- Deployment: Vercel (frontend only, data stays local)
+- Deployment: Vercel
 
 ## Files
 
-- `index.html` - View expenses + receipt photos
-- `api/expenses/` - Add/list expenses
+- `index.html` - View expenses + receipt photos + job grouping
+- `api/expenses/` - Add/list expenses with job field
 - `api/archive/` - View receipt archives
 - `api/receipts/` - Serve receipt images
 - `receipts/` - Stored receipt images
@@ -66,4 +102,4 @@ Data is stored at:
 
 ---
 
-*Built by hijapego for Sum | 2026-02-20 | v1.01*
+*Built by hijapego for Sum | 2026-02-21 | v1.02*

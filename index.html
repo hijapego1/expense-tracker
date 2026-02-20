@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sum's Expense Tracker v2.0</title>
+    <title>Sum's Expense Tracker v1.02</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -251,6 +251,7 @@
                         </div>
                         <div class="expense-info">
                             <span class="expense-type type-${expense.type}">${getTypeLabel(expense.type)}</span>
+                            ${expense.job && expense.job !== 'General' ? `<span style="background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px;">🏷️ ${expense.job}</span>` : ''}
                             <div style="font-size: 13px; margin: 4px 0;">${expense.description || 'No description'}</div>
                             <div class="expense-date">${formatDate(expense.date)}</div>
                         </div>
@@ -324,10 +325,11 @@
                 return;
             }
 
-            const headers = ['Date', 'Type', 'Amount', 'Description'];
+            const headers = ['Date', 'Type', 'Job', 'Amount', 'Description'];
             const rows = expenses.map(e => [
                 e.date,
                 getTypeLabel(e.type),
+                e.job || 'General',
                 e.amount,
                 e.description || ''
             ]);
