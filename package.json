@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Expense tracker for Sum's company",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "start": "vercel dev"
   },

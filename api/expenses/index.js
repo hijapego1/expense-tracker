@@ -1,14 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'expenses.json');
+// Use /tmp for writable storage in serverless environment
+const DATA_FILE = path.join('/tmp', 'expenses.json');
 
-// Ensure data directory and file exist
+// Ensure data file exists
 function ensureDataFile() {
-    const dir = path.dirname(DATA_FILE);
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
     if (!fs.existsSync(DATA_FILE)) {
         fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
     }
@@ -27,7 +24,7 @@ function writeExpenses(expenses) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -72,4 +69,4 @@ module.exports = async (req, res) => {
     }
 
     res.status(405).json({ error: 'Method not allowed' });
-};
+}
