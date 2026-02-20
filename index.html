@@ -241,9 +241,17 @@
             
             // Filter by selected month
             let filteredExpenses = expenses;
-            if (selectedMonth !== 'current' && selectedMonth !== 'all') {
+            
+            if (selectedMonth === 'current') {
+                // Show only current month
+                const now = new Date();
+                const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                filteredExpenses = expenses.filter(e => e.date.startsWith(currentMonthStr));
+            } else if (selectedMonth !== 'all') {
+                // Show specific month
                 filteredExpenses = expenses.filter(e => e.date.startsWith(selectedMonth));
             }
+            // If 'all', show everything (no filter)
             
             if (filteredExpenses.length === 0) {
                 container.innerHTML = '<div class="empty-state">No expenses for this period.<br>Send receipt photos to hijapego on Telegram!</div>';
@@ -322,7 +330,11 @@
 
             // Filter for export based on selection
             let exportExpenses = expenses;
-            if (selectedMonth !== 'current' && selectedMonth !== 'all') {
+            if (selectedMonth === 'current') {
+                const now = new Date();
+                const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                exportExpenses = expenses.filter(e => e.date.startsWith(currentMonthStr));
+            } else if (selectedMonth !== 'all') {
                 exportExpenses = expenses.filter(e => e.date.startsWith(selectedMonth));
             }
 
