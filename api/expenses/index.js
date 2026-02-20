@@ -5,14 +5,18 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Use /tmp for writable storage in serverless
-const DATA_FILE = path.join('/tmp', 'expenses.json');
-const RECEIPTS_DIR = path.join('/tmp', 'receipts');
+// Local storage paths
+const DATA_FILE = path.join(process.cwd(), 'data', 'expenses.json');
+const RECEIPTS_DIR = path.join(process.cwd(), 'receipts');
 
 // Ensure directories exist
 function ensureDirs() {
     if (!fs.existsSync(RECEIPTS_DIR)) {
         fs.mkdirSync(RECEIPTS_DIR, { recursive: true });
+    }
+    const dataDir = path.dirname(DATA_FILE);
+    if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
     }
 }
 
@@ -27,6 +31,7 @@ function readExpenses() {
 
 // Write expenses
 function writeExpenses(expenses) {
+    ensureDirs();
     fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
 }
 
@@ -73,12 +78,13 @@ export default async function handler(req, res) {
 
         // Save receipt image if provided
         let receiptPath = null;
+        let savedFilename = null;
         if (receiptImage) {
             // receiptImage is base64 data
             const base64Data = receiptImage.replace(/^data:image\/\w+;base64,/, '');
             const buffer = Buffer.from(base64Data, 'base64');
-            const filename = receiptFilename || `receipt-${Date.now()}.jpg`;
-            receiptPath = path.join(RECEIPTS_DIR, filename);
+            savedFilename = receiptFilename || `receipt-${Date.now()}.jpg`;
+            receiptPath = path.join(RECEIPTS_DIR, savedFilename);
             fs.writeFileSync(receiptPath, buffer);
         }
 
@@ -89,7 +95,8 @@ export default async function handler(req, res) {
             type,
             description: description || '',
             date: date || new Date().toISOString().split('T')[0],
-            receiptFilename: receiptPath ? path.basename(receiptPath) : null,
+            receiptFilename: savedFilename,
+            receiptPath: receiptPath ? `/receipts/${savedFilename}` : null,
             createdAt: new Date().toISOString()
         };
 

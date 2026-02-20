@@ -243,7 +243,9 @@
                 .map(expense => `
                     <div class="expense-item">
                         <div class="receipt-thumb">
-                            ${expense.receiptFilename ? '📷 Photo' : 'No photo'}
+                            ${expense.receiptFilename 
+                                ? `<img src="/api/receipts/${expense.receiptFilename}" alt="Receipt" onerror="this.parentElement.innerHTML='📷 Photo'">` 
+                                : 'No photo'}
                         </div>
                         <div class="expense-info">
                             <span class="expense-type type-${expense.type}">${getTypeLabel(expense.type)}</span>

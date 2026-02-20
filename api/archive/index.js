@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DATA_FILE = path.join('/tmp', 'expenses.json');
-const RECEIPTS_DIR = path.join('/tmp', 'receipts');
+const DATA_FILE = path.join(process.cwd(), 'data', 'expenses.json');
+const RECEIPTS_DIR = path.join(process.cwd(), 'receipts');
 
 function readExpenses() {
     if (!fs.existsSync(DATA_FILE)) {
@@ -43,11 +43,18 @@ export default async function handler(req, res) {
             byMonth[month].push(expense);
         });
         
+        // Get list of saved receipt files
+        let receiptFiles = [];
+        if (fs.existsSync(RECEIPTS_DIR)) {
+            receiptFiles = fs.readdirSync(RECEIPTS_DIR);
+        }
+        
         res.status(200).json({
             expenses,
             byMonth,
             totalReceipts: expenses.length,
-            months: Object.keys(byMonth).sort()
+            months: Object.keys(byMonth).sort(),
+            receiptFiles
         });
         return;
     }
