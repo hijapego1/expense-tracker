@@ -9,5 +9,16 @@
     "receiptFilename": "receipt_2025-11-28_steph-song.jpg",
     "receiptPath": "/receipts/receipt_2025-11-28_steph-song.jpg",
     "createdAt": "2026-02-20T17:10:00.000Z"
+  },
+  {
+    "id": "1771605100000",
+    "amount": 211,
+    "type": "dining",
+    "description": "Lunch at 亞參 (新都埕) - Hainanese chicken rice",
+    "date": "2026-02-16",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-16_dining.jpg",
+    "receiptPath": "/receipts/receipt_2026-02-16_dining.jpg",
+    "createdAt": "2026-02-20T17:15:00.000Z"
   }
 ]
