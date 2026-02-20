@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sum's Expense Tracker v1.02</title>
+    <title>Sum's Expense Tracker v1.03</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -13,7 +13,22 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        h1 { color: #333; margin-bottom: 20px; font-size: 24px; }
+        h1 { color: #333; margin-bottom: 10px; font-size: 24px; }
+        .month-selector {
+            margin-bottom: 20px;
+        }
+        .month-selector label {
+            font-size: 14px;
+            color: #666;
+            margin-right: 10px;
+        }
+        .month-selector select {
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background: white;
+        }
         .summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -84,6 +99,15 @@
             font-size: 11px;
             margin-bottom: 5px;
         }
+        .job-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
         .type-dining { background: #ffeaa7; color: #d63031; }
         .type-travel { background: #74b9ff; color: #0984e3; }
         .type-parking { background: #a29bfe; color: #6c5ce7; }
@@ -99,7 +123,6 @@
             font-size: 12px;
             color: #999;
         }
-        
         .btn {
             background: #2c3e50;
             color: white;
@@ -112,54 +135,26 @@
             margin-top: 15px;
         }
         .btn:hover { background: #34495e; }
-        .btn-secondary {
-            background: #74b9ff;
-        }
-        .btn-secondary:hover { background: #0984e3; }
-        
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #999;
         }
-        
-        .a4-preview {
-            background: white;
-            border: 1px solid #ddd;
-            width: 100%;
-            max-width: 600px;
-            aspect-ratio: 210/297;
-            margin: 20px auto;
-            padding: 20px;
-            position: relative;
-        }
-        .receipt-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            height: 100%;
-        }
-        .receipt-slot {
-            background: #f8f8f8;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
-            padding: 8px;
-            font-size: 11px;
-            text-align: center;
-        }
-        .receipt-slot img {
-            width: 100%;
-            height: 70%;
-            object-fit: contain;
-        }
     </style>
 </head>
 <body>
-    <h1>💰 Sum's Expense Tracker v1.01</h1>
+    <h1>💰 Sum's Expense Tracker v1.03</h1>
+    
+    <div class="month-selector">
+        <label>📅 View Month:</label>
+        <select id="month-selector" onchange="changeMonth()">
+            <option value="current">This Month</option>
+        </select>
+    </div>
     
     <div class="summary" id="summary">
         <div class="card">
-            <h3>This Month</h3>
+            <h3 id="selected-month-label">This Month</h3>
             <div class="amount" id="month-total">$0</div>
         </div>
         <div class="card">
@@ -167,52 +162,37 @@
             <div class="amount" id="week-total">$0</div>
         </div>
         <div class="card">
-            <h3>Receipts</h3>
+            <h3>Total Receipts</h3>
             <div class="amount" id="receipt-count">0</div>
         </div>
     </div>
 
     <div class="section">
         <h2>📸 Receipt Archive</h2>
-        <div id="archive-info">
-            <p style="color: #666; margin-bottom: 15px;">
-                Receipts are stored locally on your Mac Mini. View them with expense details below.
-            </p>
-            <p style="color: #999; font-size: 13px; margin-bottom: 15px;">
-                📄 A4 PDF generation: Coming in v2.0
-            </p>
-        </div>
-        <div id="a4-preview" style="display: none;">
-            <div class="a4-preview">
-                <div style="text-align: center; margin-bottom: 10px; font-size: 12px; color: #666;">
-                    A4 Page - Receipts for <span id="archive-month"></span>
-                </div>
-                <div class="receipt-grid" id="receipt-grid"></div>
-            </div>
-            <button class="btn btn-secondary" onclick="downloadPDF()">⬇️ Download PDF</button>
-        </div>
+        <p style="color: #666; margin-bottom: 15px; font-size: 14px;">
+            Receipts stored locally on your Mac Mini. View by month using selector above.
+        </p>
     </div>
 
     <div class="section">
         <h2>Recent Expenses</h2>
         <div id="expenses">
-            <div class="empty-state">
-                No expenses yet.<br>
-                Send receipt photos to hijapego on Telegram!
-            </div>
+            <div class="empty-state">No expenses yet.<br>Send receipt photos to hijapego on Telegram!</div>
         </div>
         <button class="btn" onclick="exportCSV()">📊 Export to Excel</button>
     </div>
 
     <script>
         let expenses = [];
-        let archiveData = { byMonth: {} };
+        let allMonths = [];
+        let selectedMonth = 'current';
 
         // Load expenses
         async function loadExpenses() {
             try {
                 const response = await fetch('/api/expenses');
                 expenses = await response.json();
+                populateMonthSelector();
                 renderExpenses();
                 updateSummary();
             } catch (err) {
@@ -220,38 +200,68 @@
             }
         }
 
-        // Load archive data
-        async function loadArchive() {
-            try {
-                const response = await fetch('/api/archive');
-                archiveData = await response.json();
-                updateSummary();
-            } catch (err) {
-                console.error('Failed to load archive:', err);
-            }
+        // Populate month selector dropdown
+        function populateMonthSelector() {
+            const selector = document.getElementById('month-selector');
+            
+            // Get unique months from expenses
+            const months = [...new Set(expenses.map(e => e.date.substring(0, 7)))].sort().reverse();
+            allMonths = months;
+            
+            // Clear existing options except "This Month"
+            selector.innerHTML = '<option value="current">This Month</option>';
+            
+            // Add month options
+            months.forEach(month => {
+                const [year, monthNum] = month.split('-');
+                const monthName = new Date(year, monthNum - 1).toLocaleDateString('zh-HK', { year: 'numeric', month: 'long' });
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = monthName;
+                selector.appendChild(option);
+            });
+            
+            // Add "All Time" option
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'All Time';
+            selector.appendChild(allOption);
+        }
+
+        // Change month selection
+        function changeMonth() {
+            selectedMonth = document.getElementById('month-selector').value;
+            renderExpenses();
+            updateSummary();
         }
 
         // Render expense list
         function renderExpenses() {
             const container = document.getElementById('expenses');
             
-            if (expenses.length === 0) {
-                container.innerHTML = '<div class="empty-state">No expenses yet.<br>Send receipt photos to hijapego on Telegram!</div>';
+            // Filter by selected month
+            let filteredExpenses = expenses;
+            if (selectedMonth !== 'current' && selectedMonth !== 'all') {
+                filteredExpenses = expenses.filter(e => e.date.startsWith(selectedMonth));
+            }
+            
+            if (filteredExpenses.length === 0) {
+                container.innerHTML = '<div class="empty-state">No expenses for this period.<br>Send receipt photos to hijapego on Telegram!</div>';
                 return;
             }
 
-            container.innerHTML = expenses
+            container.innerHTML = filteredExpenses
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map(expense => `
                     <div class="expense-item">
                         <div class="receipt-thumb">
                             ${expense.receiptFilename 
                                 ? `<img src="/api/receipts/${expense.receiptFilename}" alt="Receipt" onerror="this.parentElement.innerHTML='📷 Photo'">` 
-                                : 'No photo'}
+                                : '📷 Photo'}
                         </div>
                         <div class="expense-info">
                             <span class="expense-type type-${expense.type}">${getTypeLabel(expense.type)}</span>
-                            ${expense.job && expense.job !== 'General' ? `<span style="background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px;">🏷️ ${expense.job}</span>` : ''}
+                            ${expense.job && expense.job !== 'General' ? `<span class="job-tag">🏷️ ${expense.job}</span>` : ''}
                             <div style="font-size: 13px; margin: 4px 0;">${expense.description || 'No description'}</div>
                             <div class="expense-date">${formatDate(expense.date)}</div>
                         </div>
@@ -264,58 +274,43 @@
         function updateSummary() {
             const now = new Date();
             const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            
+            // Determine month start based on selection
+            let monthStart;
+            let monthLabel;
+            
+            if (selectedMonth === 'current') {
+                monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                monthLabel = 'This Month';
+            } else if (selectedMonth === 'all') {
+                monthStart = new Date(2000, 0, 1); // All time
+                monthLabel = 'All Time';
+            } else {
+                const [year, month] = selectedMonth.split('-');
+                monthStart = new Date(year, month - 1, 1);
+                monthLabel = new Date(year, month - 1).toLocaleDateString('zh-HK', { year: 'numeric', month: 'long' });
+            }
 
+            // Filter for selected month
+            let monthExpenses = expenses;
+            if (selectedMonth !== 'all') {
+                const nextMonth = new Date(monthStart);
+                nextMonth.setMonth(nextMonth.getMonth() + 1);
+                monthExpenses = expenses.filter(e => {
+                    const d = new Date(e.date);
+                    return d >= monthStart && d < nextMonth;
+                });
+            }
+
+            const monthTotal = monthExpenses.reduce((sum, e) => sum + e.amount, 0);
             const weekTotal = expenses
                 .filter(e => new Date(e.date) >= weekAgo)
                 .reduce((sum, e) => sum + e.amount, 0);
 
-            const monthTotal = expenses
-                .filter(e => new Date(e.date) >= monthStart)
-                .reduce((sum, e) => sum + e.amount, 0);
-
             document.getElementById('week-total').textContent = `$${weekTotal.toFixed(2)}`;
             document.getElementById('month-total').textContent = `$${monthTotal.toFixed(2)}`;
-            document.getElementById('receipt-count').textContent = archiveData.totalReceipts || 0;
-        }
-
-        // Generate A4 preview
-        function generateA4() {
-            const preview = document.getElementById('a4-preview');
-            const grid = document.getElementById('receipt-grid');
-            const info = document.getElementById('archive-info');
-            
-            if (archiveData.totalReceipts === 0) {
-                alert('No receipts to organize yet!');
-                return;
-            }
-
-            // Show first month's receipts
-            const firstMonth = archiveData.months[0];
-            const monthReceipts = archiveData.byMonth[firstMonth];
-            
-            document.getElementById('archive-month').textContent = firstMonth;
-            
-            // Fill grid with receipts (max 9 per A4 page)
-            grid.innerHTML = monthReceipts.slice(0, 9).map(r => `
-                <div class="receipt-slot">
-                    <div>📷 ${r.description || 'Receipt'}</div>
-                    <div style="margin-top: 5px;">$${r.amount.toFixed(2)}</div>
-                </div>
-            `).join('');
-            
-            // Fill empty slots
-            for (let i = monthReceipts.length; i < 9; i++) {
-                grid.innerHTML += '<div class="receipt-slot" style="opacity: 0.3;">Empty</div>';
-            }
-            
-            preview.style.display = 'block';
-            info.style.display = 'none';
-        }
-
-        // Download PDF
-        function downloadPDF() {
-            alert('PDF generation coming in v2.1!\n\nFor now, use browser print (Ctrl+P) to save as PDF.');
+            document.getElementById('selected-month-label').textContent = monthLabel;
+            document.getElementById('receipt-count').textContent = expenses.length;
         }
 
         // Export CSV
@@ -325,8 +320,14 @@
                 return;
             }
 
+            // Filter for export based on selection
+            let exportExpenses = expenses;
+            if (selectedMonth !== 'current' && selectedMonth !== 'all') {
+                exportExpenses = expenses.filter(e => e.date.startsWith(selectedMonth));
+            }
+
             const headers = ['Date', 'Type', 'Job', 'Amount', 'Description'];
-            const rows = expenses.map(e => [
+            const rows = exportExpenses.map(e => [
                 e.date,
                 getTypeLabel(e.type),
                 e.job || 'General',
@@ -341,7 +342,8 @@
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `expenses_${new Date().toISOString().split('T')[0]}.csv`;
+            const monthStr = selectedMonth === 'current' ? new Date().toISOString().split('T')[0] : selectedMonth;
+            link.download = `expenses_${monthStr}.csv`;
             link.click();
         }
 
@@ -369,13 +371,9 @@
 
         // Load on startup
         loadExpenses();
-        loadArchive();
         
         // Refresh every 30 seconds
-        setInterval(() => {
-            loadExpenses();
-            loadArchive();
-        }, 30000);
+        setInterval(loadExpenses, 30000);
     </script>
 </body>
 </html>

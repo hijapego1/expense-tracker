@@ -1,15 +1,13 @@
-# Expense Tracker v1.02 for Sum
+# Expense Tracker v1.03 for Sum
 
 ## What It Does
 
-Tracks company expenses from receipt photos with **job/project tracking**:
+Tracks company expenses from receipt photos with **job/project tracking** and **month view**:
 - You send receipt photos via Telegram
-- Add **job/project name** in caption (e.g., "Steph Song project")
-- I **store the photo locally** + extract data + tag with job
-- View expenses grouped by job
+- Add **job/project name** in caption (e.g., "Steph Song project") or leave blank for General
+- **Quick confirm:** Reply **Y** to save, **N** to cancel
+- **View by any month** - check past months like November 2025
 - Export to CSV for Excel
-
-**Quick Confirm:** Y = Yes, N = No
 
 ## Expense Types
 
@@ -40,23 +38,31 @@ Tracks company expenses from receipt photos with **job/project tracking**:
 ### Quick Commands
 
 - **Y** = Yes, save it
-- **N** = No, need to amend/cancel
+- **N** = No, cancel/amend
 
-### Viewing
+### Viewing by Month
 
 - **Web app:** https://expense-tracker-fndu.vercel.app/
-- **By Job:** Expenses grouped by project
-- **By Type:** Dining, Parking, etc.
-- **Export:** CSV with job column for Excel
+- **Month selector:** Choose any month (e.g., 2025年11月)
+- **View past months:** Check November 2025, December 2025, etc.
+- **All Time:** See all expenses
 
-## v1.02 Features
+### By Job
 
-- ✅ **Quick confirm:** Y/N instead of typing "yes"
+- Expenses grouped by project name
+- Filter and export by job
+
+## v1.03 Features
+
+- ✅ **Quick confirm:** Y/N (no typing "yes")
 - ✅ **Job/Project tracking:** Caption = job name
+- ✅ **Month view:** Select any month to view past expenses
+- ✅ **Keep Chinese names:** Merchant names stay in original language
+- ✅ **Simple descriptions:** Just merchant name, no item details
 - ✅ **Local receipt storage:** Photos saved on Mac Mini
 - ✅ **Receipt image display:** View photos in web app
 - ✅ **Job grouping:** See expenses by project
-- ✅ **CSV Export:** Excel compatible with job column
+- ✅ **CSV Export** with job column
 
 ## Storage Location
 
@@ -84,6 +90,11 @@ Data is stored at:
 - Type: Parking
 - Result: Tagged as "General"
 
+**View Past Month:**
+- Select "2025年11月" from dropdown
+- See November 2025 expenses
+- Check totals for that month
+
 ## Tech Stack
 
 - Frontend: HTML + JavaScript
@@ -93,7 +104,7 @@ Data is stored at:
 
 ## Files
 
-- `index.html` - View expenses + receipt photos + job grouping
+- `index.html` - View expenses + month selector + receipt photos + job grouping
 - `api/expenses/` - Add/list expenses with job field
 - `api/archive/` - View receipt archives
 - `api/receipts/` - Serve receipt images
@@ -102,4 +113,4 @@ Data is stored at:
 
 ---
 
-*Built by hijapego for Sum | 2026-02-21 | v1.02*
+*Built by hijapego for Sum | 2026-02-21 | v1.03*
