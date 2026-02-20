@@ -1,5 +1,34 @@
-// Simple in-memory storage (resets on deploy, but works for demo)
-const expenses = [];
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Use /tmp for writable storage in serverless
+const DATA_FILE = path.join('/tmp', 'expenses.json');
+const RECEIPTS_DIR = path.join('/tmp', 'receipts');
+
+// Ensure directories exist
+function ensureDirs() {
+    if (!fs.existsSync(RECEIPTS_DIR)) {
+        fs.mkdirSync(RECEIPTS_DIR, { recursive: true });
+    }
+}
+
+// Read expenses
+function readExpenses() {
+    if (!fs.existsSync(DATA_FILE)) {
+        return [];
+    }
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+}
+
+// Write expenses
+function writeExpenses(expenses) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
+}
 
 export default async function handler(req, res) {
     // Enable CORS
@@ -14,12 +43,15 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         // List all expenses
+        const expenses = readExpenses();
         res.status(200).json(expenses);
         return;
     }
 
     if (req.method === 'POST') {
-        // Add new expense
+        // Add new expense with optional receipt image
+        ensureDirs();
+        
         let body = req.body;
         
         // Handle both JSON and string body
@@ -32,23 +64,37 @@ export default async function handler(req, res) {
             }
         }
         
-        const { amount, type, description, date } = body;
+        const { amount, type, description, date, receiptImage, receiptFilename } = body;
 
         if (!amount || !type) {
             res.status(400).json({ error: 'Amount and type are required' });
             return;
         }
 
+        // Save receipt image if provided
+        let receiptPath = null;
+        if (receiptImage) {
+            // receiptImage is base64 data
+            const base64Data = receiptImage.replace(/^data:image\/\w+;base64,/, '');
+            const buffer = Buffer.from(base64Data, 'base64');
+            const filename = receiptFilename || `receipt-${Date.now()}.jpg`;
+            receiptPath = path.join(RECEIPTS_DIR, filename);
+            fs.writeFileSync(receiptPath, buffer);
+        }
+
+        const expenses = readExpenses();
         const newExpense = {
             id: Date.now().toString(),
             amount: parseFloat(amount),
             type,
             description: description || '',
             date: date || new Date().toISOString().split('T')[0],
+            receiptFilename: receiptPath ? path.basename(receiptPath) : null,
             createdAt: new Date().toISOString()
         };
 
         expenses.push(newExpense);
+        writeExpenses(expenses);
 
         res.status(201).json(newExpense);
         return;

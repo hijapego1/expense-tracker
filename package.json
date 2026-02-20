@@ -1,13 +1,16 @@
 {
   "name": "expense-tracker",
-  "version": "1.0.0",
-  "description": "Expense tracker for Sum's company",
+  "version": "2.0.0",
+  "description": "Expense tracker with receipt storage and PDF archive",
   "main": "index.html",
   "type": "module",
   "scripts": {
     "start": "vercel dev"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.1"
+  },
   "devDependencies": {},
   "engines": {
     "node": "24.x"

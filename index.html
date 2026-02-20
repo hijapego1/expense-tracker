@@ -3,62 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sum's Expense Tracker</title>
+    <title>Sum's Expense Tracker v2.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
             padding: 20px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
-        h1 { color: #333; margin-bottom: 20px; }
+        h1 { color: #333; margin-bottom: 20px; font-size: 24px; }
         .summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
         }
         .card {
             background: white;
-            padding: 20px;
+            padding: 16px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .card h3 {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
         .card .amount {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             color: #2c3e50;
         }
-        .expense-list {
+        
+        .section {
             background: white;
             border-radius: 10px;
             padding: 20px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .expense-list h2 {
+        .section h2 {
             margin-bottom: 15px;
             color: #333;
+            font-size: 18px;
         }
+        
         .expense-item {
             display: flex;
-            justify-content: space-between;
+            gap: 15px;
             padding: 15px 0;
             border-bottom: 1px solid #eee;
+            align-items: flex-start;
         }
         .expense-item:last-child { border-bottom: none; }
+        .receipt-thumb {
+            width: 80px;
+            height: 100px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #999;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .receipt-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .expense-info { flex: 1; }
         .expense-type {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 11px;
             margin-bottom: 5px;
         }
         .type-dining { background: #ffeaa7; color: #d63031; }
@@ -68,7 +91,7 @@
         .type-supplies { background: #55efc4; color: #00b894; }
         .type-other { background: #dfe6e9; color: #636e72; }
         .expense-amount {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #2c3e50;
         }
@@ -76,26 +99,63 @@
             font-size: 12px;
             color: #999;
         }
-        .export-btn {
+        
+        .btn {
             background: #2c3e50;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 20px;
-            font-size: 16px;
+            font-size: 15px;
+            margin-right: 10px;
+            margin-top: 15px;
         }
-        .export-btn:hover { background: #34495e; }
+        .btn:hover { background: #34495e; }
+        .btn-secondary {
+            background: #74b9ff;
+        }
+        .btn-secondary:hover { background: #0984e3; }
+        
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #999;
         }
+        
+        .a4-preview {
+            background: white;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 210/297;
+            margin: 20px auto;
+            padding: 20px;
+            position: relative;
+        }
+        .receipt-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            height: 100%;
+        }
+        .receipt-slot {
+            background: #f8f8f8;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 11px;
+            text-align: center;
+        }
+        .receipt-slot img {
+            width: 100%;
+            height: 70%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
-    <h1>💰 Sum's Expense Tracker</h1>
+    <h1>💰 Sum's Expense Tracker v2.0</h1>
     
     <div class="summary" id="summary">
         <div class="card">
@@ -106,20 +166,47 @@
             <h3>This Week</h3>
             <div class="amount" id="week-total">$0</div>
         </div>
+        <div class="card">
+            <h3>Receipts</h3>
+            <div class="amount" id="receipt-count">0</div>
+        </div>
     </div>
 
-    <div class="expense-list">
+    <div class="section">
+        <h2>📸 Receipt Archive (A4 Organizer)</h2>
+        <div id="archive-info">
+            <p style="color: #666; margin-bottom: 15px;">
+                Receipts are organized by date. Generate A4 pages for printing/filing.
+            </p>
+            <button class="btn" onclick="generateA4()">📄 Generate A4 Archive</button>
+        </div>
+        <div id="a4-preview" style="display: none;">
+            <div class="a4-preview">
+                <div style="text-align: center; margin-bottom: 10px; font-size: 12px; color: #666;">
+                    A4 Page - Receipts for <span id="archive-month"></span>
+                </div>
+                <div class="receipt-grid" id="receipt-grid"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="downloadPDF()">⬇️ Download PDF</button>
+        </div>
+    </div>
+
+    <div class="section">
         <h2>Recent Expenses</h2>
         <div id="expenses">
-            <div class="empty-state">No expenses yet. Send receipt photos to hijapego on Telegram!</div>
+            <div class="empty-state">
+                No expenses yet.<br>
+                Send receipt photos to hijapego on Telegram!
+            </div>
         </div>
-        <button class="export-btn" onclick="exportCSV()">📊 Export to Excel</button>
+        <button class="btn" onclick="exportCSV()">📊 Export to Excel</button>
     </div>
 
     <script>
         let expenses = [];
+        let archiveData = { byMonth: {} };
 
-        // Load expenses from API
+        // Load expenses
         async function loadExpenses() {
             try {
                 const response = await fetch('/api/expenses');
@@ -131,12 +218,23 @@
             }
         }
 
+        // Load archive data
+        async function loadArchive() {
+            try {
+                const response = await fetch('/api/archive');
+                archiveData = await response.json();
+                updateSummary();
+            } catch (err) {
+                console.error('Failed to load archive:', err);
+            }
+        }
+
         // Render expense list
         function renderExpenses() {
             const container = document.getElementById('expenses');
             
             if (expenses.length === 0) {
-                container.innerHTML = '<div class="empty-state">No expenses yet. Send receipt photos to hijapego on Telegram!</div>';
+                container.innerHTML = '<div class="empty-state">No expenses yet.<br>Send receipt photos to hijapego on Telegram!</div>';
                 return;
             }
 
@@ -144,9 +242,12 @@
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map(expense => `
                     <div class="expense-item">
+                        <div class="receipt-thumb">
+                            ${expense.receiptFilename ? '📷 Photo' : 'No photo'}
+                        </div>
                         <div class="expense-info">
                             <span class="expense-type type-${expense.type}">${getTypeLabel(expense.type)}</span>
-                            <div>${expense.description || 'No description'}</div>
+                            <div style="font-size: 13px; margin: 4px 0;">${expense.description || 'No description'}</div>
                             <div class="expense-date">${formatDate(expense.date)}</div>
                         </div>
                         <div class="expense-amount">$${expense.amount.toFixed(2)}</div>
@@ -154,7 +255,7 @@
                 `).join('');
         }
 
-        // Update summary cards
+        // Update summary
         function updateSummary() {
             const now = new Date();
             const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
@@ -170,32 +271,49 @@
 
             document.getElementById('week-total').textContent = `$${weekTotal.toFixed(2)}`;
             document.getElementById('month-total').textContent = `$${monthTotal.toFixed(2)}`;
+            document.getElementById('receipt-count').textContent = archiveData.totalReceipts || 0;
         }
 
-        // Get Chinese label for type
-        function getTypeLabel(type) {
-            const labels = {
-                'dining': '餐飲 Dining',
-                'travel': '交通 Travel',
-                'parking': '停車 Parking',
-                'equipment': '設備 Equipment',
-                'supplies': '用品 Supplies',
-                'other': '其他 Other'
-            };
-            return labels[type] || type;
+        // Generate A4 preview
+        function generateA4() {
+            const preview = document.getElementById('a4-preview');
+            const grid = document.getElementById('receipt-grid');
+            const info = document.getElementById('archive-info');
+            
+            if (archiveData.totalReceipts === 0) {
+                alert('No receipts to organize yet!');
+                return;
+            }
+
+            // Show first month's receipts
+            const firstMonth = archiveData.months[0];
+            const monthReceipts = archiveData.byMonth[firstMonth];
+            
+            document.getElementById('archive-month').textContent = firstMonth;
+            
+            // Fill grid with receipts (max 9 per A4 page)
+            grid.innerHTML = monthReceipts.slice(0, 9).map(r => `
+                <div class="receipt-slot">
+                    <div>📷 ${r.description || 'Receipt'}</div>
+                    <div style="margin-top: 5px;">$${r.amount.toFixed(2)}</div>
+                </div>
+            `).join('');
+            
+            // Fill empty slots
+            for (let i = monthReceipts.length; i < 9; i++) {
+                grid.innerHTML += '<div class="receipt-slot" style="opacity: 0.3;">Empty</div>';
+            }
+            
+            preview.style.display = 'block';
+            info.style.display = 'none';
         }
 
-        // Format date
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('zh-HK', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
+        // Download PDF
+        function downloadPDF() {
+            alert('PDF generation coming in v2.1!\n\nFor now, use browser print (Ctrl+P) to save as PDF.');
         }
 
-        // Export to CSV
+        // Export CSV
         function exportCSV() {
             if (expenses.length === 0) {
                 alert('No expenses to export!');
@@ -221,11 +339,37 @@
             link.click();
         }
 
+        // Helpers
+        function getTypeLabel(type) {
+            const labels = {
+                'dining': '餐飲 Dining',
+                'travel': '交通 Travel',
+                'parking': '停車 Parking',
+                'equipment': '設備 Equipment',
+                'supplies': '用品 Supplies',
+                'other': '其他 Other'
+            };
+            return labels[type] || type;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('zh-HK', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
         // Load on startup
         loadExpenses();
+        loadArchive();
         
         // Refresh every 30 seconds
-        setInterval(loadExpenses, 30000);
+        setInterval(() => {
+            loadExpenses();
+            loadArchive();
+        }, 30000);
     </script>
 </body>
 </html>
