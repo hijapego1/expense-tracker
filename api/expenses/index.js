@@ -1,28 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-
-// Use /tmp for writable storage in serverless environment
-const DATA_FILE = path.join('/tmp', 'expenses.json');
-
-// Ensure data file exists
-function ensureDataFile() {
-    if (!fs.existsSync(DATA_FILE)) {
-        fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
-    }
-}
-
-// Read expenses
-function readExpenses() {
-    ensureDataFile();
-    const data = fs.readFileSync(DATA_FILE, 'utf8');
-    return JSON.parse(data);
-}
-
-// Write expenses
-function writeExpenses(expenses) {
-    ensureDataFile();
-    fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
-}
+// Simple in-memory storage (resets on deploy, but works for demo)
+const expenses = [];
 
 export default async function handler(req, res) {
     // Enable CORS
@@ -37,21 +14,31 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         // List all expenses
-        const expenses = readExpenses();
         res.status(200).json(expenses);
         return;
     }
 
     if (req.method === 'POST') {
         // Add new expense
-        const { amount, type, description, date } = req.body;
+        let body = req.body;
+        
+        // Handle both JSON and string body
+        if (typeof body === 'string') {
+            try {
+                body = JSON.parse(body);
+            } catch (e) {
+                res.status(400).json({ error: 'Invalid JSON body' });
+                return;
+            }
+        }
+        
+        const { amount, type, description, date } = body;
 
         if (!amount || !type) {
             res.status(400).json({ error: 'Amount and type are required' });
             return;
         }
 
-        const expenses = readExpenses();
         const newExpense = {
             id: Date.now().toString(),
             amount: parseFloat(amount),
@@ -62,7 +49,6 @@ export default async function handler(req, res) {
         };
 
         expenses.push(newExpense);
-        writeExpenses(expenses);
 
         res.status(201).json(newExpense);
         return;
