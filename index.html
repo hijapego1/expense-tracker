@@ -263,10 +263,12 @@
                 .map(expense => `
                     <div class="expense-item">
                         <div class="receipt-thumb">
-                            ${expense.receiptFilename 
-                                ? `<img src="/api/receipts/${expense.receiptFilename}" alt="Receipt" onerror="this.parentElement.innerHTML='📷 Photo'">` 
-                                : '📷 Photo'}
-                        </div>
+                            ${expense.receiptPath && expense.receiptPath.startsWith('http') 
+                                ? `<img src="${expense.receiptPath}" alt="Receipt" onerror="this.parentElement.innerHTML='📷 Photo'" loading="lazy">`
+                                : expense.receiptFilename 
+                                    ? `<img src="/api/receipts/${expense.receiptFilename}" alt="Receipt" onerror="this.parentElement.innerHTML='📷 Photo'" loading="lazy">` 
+                                    : '📷 Photo'}
+</div>
                         <div class="expense-info">
                             <span class="expense-type type-${expense.type}">${getTypeLabel(expense.type)}</span>
                             ${expense.job && expense.job !== 'General' ? `<span class="job-tag">🏷️ ${expense.job}</span>` : ''}
