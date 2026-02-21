@@ -1,17 +1,5 @@
 {
   "name": "expense-tracker",
-  "version": "1.0.3",
-  "description": "Expense tracker with job tracking, quick confirm, and month view",
-  "main": "index.html",
-  "type": "module",
-  "scripts": {
-    "start": "vercel dev"
-  },
-  "dependencies": {},
-  "cloudinary": "^1.41.0"
-},
-  "devDependencies": {},
-  "engines": {
-    "node": "24.x"
-  }
+  "version": "1.0.6",
+  "dependencies": {}
 }
