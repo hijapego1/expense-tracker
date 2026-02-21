@@ -7,9 +7,7 @@
   "scripts": {
     "start": "vercel dev"
   },
-  "dependencies": {
-  "@vercel/kv": "^1.0.0"
-},
+  "dependencies": {},
   "cloudinary": "^1.41.0"
 },
   "devDependencies": {},
