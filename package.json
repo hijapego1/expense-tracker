@@ -1,5 +1,15 @@
 {
   "name": "expense-tracker",
   "version": "1.0.6",
-  "dependencies": {}
+  "description": "Expense tracker with Upstash database",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": "24.x"
+  }
 }
