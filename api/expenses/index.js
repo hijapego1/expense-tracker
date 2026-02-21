@@ -11,27 +11,45 @@ export default async function handler(req, res) {
   const UPSTASH_URL = process.env.KV_REST_API_URL;
   const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN;
 
-  if (req.method === 'GET') {
+  // Helper to get expenses from Upstash
+  async function getExpenses() {
     try {
       const response = await fetch(`${UPSTASH_URL}/get/expenses`, {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
-      
       const data = await response.json();
       
-      // Handle both result and value formats
-      let expenses = [];
-      if (data.result) {
-        expenses = JSON.parse(data.result);
-      } else if (data.value) {
-        expenses = JSON.parse(data.value);
-      }
+      // Upstash returns {result: "json-string"} or {value: "json-string"}
+      let raw = null;
+      if (data.result !== undefined) raw = data.result;
+      else if (data.value !== undefined) raw = data.value;
       
-      return res.status(200).json(expenses);
+      if (!raw) return [];
       
+      // Parse the JSON string
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
     } catch (err) {
-      return res.status(200).json([]);
+      console.log('Get error:', err.message);
+      return [];
     }
+  }
+
+  // Helper to save expenses to Upstash
+  async function saveExpenses(expenses) {
+    await fetch(`${UPSTASH_URL}/set/expenses`, {
+      method: 'POST',
+      headers: { 
+        Authorization: `Bearer ${UPSTASH_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ value: JSON.stringify(expenses) })
+    });
+  }
+
+  if (req.method === 'GET') {
+    const expenses = await getExpenses();
+    return res.status(200).json(expenses);
   }
 
   if (req.method === 'POST') {
@@ -43,20 +61,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Amount and type required' });
       }
 
-      // Get existing
-      const getRes = await fetch(`${UPSTASH_URL}/get/expenses`, {
-        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-      });
-      const getData = await getRes.json();
+      // Get existing expenses
+      const expenses = await getExpenses();
       
-      let expenses = [];
-      if (getData.result) {
-        expenses = JSON.parse(getData.result);
-      } else if (getData.value) {
-        expenses = JSON.parse(getData.value);
-      }
-
-      // Add new
+      // Add new expense
       const newExpense = {
         id: Date.now().toString(),
         amount: parseFloat(amount),
@@ -71,19 +79,13 @@ export default async function handler(req, res) {
 
       expenses.push(newExpense);
 
-      // Save back
-      await fetch(`${UPSTASH_URL}/set/expenses`, {
-        method: 'POST',
-        headers: { 
-          Authorization: `Bearer ${UPSTASH_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ value: JSON.stringify(expenses) })
-      });
+      // Save back to database
+      await saveExpenses(expenses);
 
       return res.status(201).json(newExpense);
       
     } catch (err) {
+      console.error('POST error:', err);
       return res.status(500).json({ error: err.message });
     }
   }
