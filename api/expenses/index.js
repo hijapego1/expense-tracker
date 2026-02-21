@@ -1,4 +1,9 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -12,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    const expenses = await kv.get('expenses') || [];
+    const expenses = await redis.get('expenses') || [];
     res.status(200).json(expenses);
     return;
   }
@@ -26,7 +31,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const expenses = await kv.get('expenses') || [];
+    const expenses = await redis.get('expenses') || [];
     
     const newExpense = {
       id: Date.now().toString(),
@@ -40,7 +45,7 @@ export default async function handler(req, res) {
     };
 
     expenses.push(newExpense);
-    await kv.set('expenses', expenses);
+    await redis.set('expenses', expenses);
 
     res.status(201).json(newExpense);
     return;
