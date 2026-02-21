@@ -1,30 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
-// Upstash REST API directly using fetch
-const UPSTASH_URL = process.env.KV_REST_API_URL;
-const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN;
-
-async function kvGet(key) {
-  const response = await fetch(`${UPSTASH_URL}/get/${key}`, {
-    headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-  });
-  const data = await response.json();
-  return data.result ? JSON.parse(data.result) : null;
-}
-
-async function kvSet(key, value) {
-  const response = await fetch(`${UPSTASH_URL}/set/${key}`, {
-    method: 'POST',
-    headers: { 
-      Authorization: `Bearer ${UPSTASH_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ value: JSON.stringify(value) })
-  });
-  return response.ok;
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -35,15 +8,32 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Upstash config from env vars
+  const UPSTASH_URL = process.env.KV_REST_API_URL;
+  const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN;
+
   if (req.method === 'GET') {
     try {
-      const expenses = await kvGet('expenses') || [];
-      res.status(200).json(expenses);
+      if (!UPSTASH_URL || !UPSTASH_TOKEN) {
+        return res.status(200).json({ 
+          error: 'Missing env vars',
+          hasUrl: !!UPSTASH_URL,
+          hasToken: !!UPSTASH_TOKEN
+        });
+      }
+
+      const response = await fetch(`${UPSTASH_URL}/get/expenses`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      
+      const data = await response.json();
+      const expenses = data.result ? JSON.parse(data.result) : [];
+      
+      return res.status(200).json(expenses);
+      
     } catch (err) {
-      console.error('Database error:', err);
-      res.status(500).json({ error: 'Database error', details: err.message });
+      return res.status(200).json({ error: err.message });
     }
-    return;
   }
 
   if (req.method === 'POST') {
@@ -52,12 +42,17 @@ export default async function handler(req, res) {
       const { amount, type, description, date, job, receiptFilename, receiptPath } = body;
       
       if (!amount || !type) {
-        res.status(400).json({ error: 'Amount and type are required' });
-        return;
+        return res.status(400).json({ error: 'Amount and type required' });
       }
 
-      const expenses = await kvGet('expenses') || [];
-      
+      // Get existing
+      const getRes = await fetch(`${UPSTASH_URL}/get/expenses`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      const getData = await getRes.json();
+      const expenses = getData.result ? JSON.parse(getData.result) : [];
+
+      // Add new
       const newExpense = {
         id: Date.now().toString(),
         amount: parseFloat(amount),
@@ -71,14 +66,22 @@ export default async function handler(req, res) {
       };
 
       expenses.push(newExpense);
-      await kvSet('expenses', expenses);
 
-      res.status(201).json(newExpense);
+      // Save back
+      await fetch(`${UPSTASH_URL}/set/expenses`, {
+        method: 'POST',
+        headers: { 
+          Authorization: `Bearer ${UPSTASH_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ value: JSON.stringify(expenses) })
+      });
+
+      return res.status(201).json(newExpense);
+      
     } catch (err) {
-      console.error('Database error:', err);
-      res.status(500).json({ error: 'Database error', details: err.message });
+      return res.status(500).json({ error: err.message });
     }
-    return;
   }
 
   res.status(405).json({ error: 'Method not allowed' });
