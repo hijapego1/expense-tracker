@@ -6,8 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Local storage paths
-const DATA_FILE = path.join(process.cwd(), 'data', 'expenses.json');
-const RECEIPTS_DIR = path.join(process.cwd(), 'receipts');
+const DATA_FILE = path.join('/tmp', 'data', 'expenses.json');
+const RECEIPTS_DIR = path.join('/tmp', 'receipts');
 
 // Ensure directories exist
 function ensureDirs() {
