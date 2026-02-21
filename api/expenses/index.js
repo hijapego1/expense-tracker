@@ -8,31 +8,29 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Upstash config from env vars
   const UPSTASH_URL = process.env.KV_REST_API_URL;
   const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN;
 
   if (req.method === 'GET') {
     try {
-      if (!UPSTASH_URL || !UPSTASH_TOKEN) {
-        return res.status(200).json({ 
-          error: 'Missing env vars',
-          hasUrl: !!UPSTASH_URL,
-          hasToken: !!UPSTASH_TOKEN
-        });
-      }
-
       const response = await fetch(`${UPSTASH_URL}/get/expenses`, {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
       
       const data = await response.json();
-      const expenses = data.result ? JSON.parse(data.result) : [];
+      
+      // Handle both result and value formats
+      let expenses = [];
+      if (data.result) {
+        expenses = JSON.parse(data.result);
+      } else if (data.value) {
+        expenses = JSON.parse(data.value);
+      }
       
       return res.status(200).json(expenses);
       
     } catch (err) {
-      return res.status(200).json({ error: err.message });
+      return res.status(200).json([]);
     }
   }
 
@@ -50,7 +48,13 @@ export default async function handler(req, res) {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
       const getData = await getRes.json();
-      const expenses = getData.result ? JSON.parse(getData.result) : [];
+      
+      let expenses = [];
+      if (getData.result) {
+        expenses = JSON.parse(getData.result);
+      } else if (getData.value) {
+        expenses = JSON.parse(getData.value);
+      }
 
       // Add new
       const newExpense = {
