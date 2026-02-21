@@ -1,13 +1,31 @@
-import { createClient } from '@vercel/kv';
+import fs from 'fs';
+import path from 'path';
 
-// Create KV client using environment variables
-const kv = createClient({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
-});
+// Upstash REST API directly using fetch
+const UPSTASH_URL = process.env.KV_REST_API_URL;
+const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN;
+
+async function kvGet(key) {
+  const response = await fetch(`${UPSTASH_URL}/get/${key}`, {
+    headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+  });
+  const data = await response.json();
+  return data.result ? JSON.parse(data.result) : null;
+}
+
+async function kvSet(key, value) {
+  const response = await fetch(`${UPSTASH_URL}/set/${key}`, {
+    method: 'POST',
+    headers: { 
+      Authorization: `Bearer ${UPSTASH_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ value: JSON.stringify(value) })
+  });
+  return response.ok;
+}
 
 export default async function handler(req, res) {
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -19,10 +37,10 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const expenses = await kv.get('expenses') || [];
+      const expenses = await kvGet('expenses') || [];
       res.status(200).json(expenses);
     } catch (err) {
-      console.error('KV GET error:', err);
+      console.error('Database error:', err);
       res.status(500).json({ error: 'Database error', details: err.message });
     }
     return;
@@ -38,7 +56,7 @@ export default async function handler(req, res) {
         return;
       }
 
-      const expenses = await kv.get('expenses') || [];
+      const expenses = await kvGet('expenses') || [];
       
       const newExpense = {
         id: Date.now().toString(),
@@ -53,11 +71,11 @@ export default async function handler(req, res) {
       };
 
       expenses.push(newExpense);
-      await kv.set('expenses', expenses);
+      await kvSet('expenses', expenses);
 
       res.status(201).json(newExpense);
     } catch (err) {
-      console.error('KV POST error:', err);
+      console.error('Database error:', err);
       res.status(500).json({ error: 'Database error', details: err.message });
     }
     return;
