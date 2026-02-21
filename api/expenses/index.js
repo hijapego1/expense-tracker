@@ -1,9 +1,35 @@
-import { Redis } from '@upstash/redis';
+import fs from 'fs';
+import path from 'path';
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
+// Use /tmp for Vercel serverless (only writable location)
+const DATA_FILE = path.join('/tmp', 'data', 'expenses.json');
+const RECEIPTS_DIR = path.join('/tmp', 'receipts');
+
+// Ensure directories exist
+function ensureDirs() {
+  if (!fs.existsSync(RECEIPTS_DIR)) {
+    fs.mkdirSync(RECEIPTS_DIR, { recursive: true });
+  }
+  const dataDir = path.dirname(DATA_FILE);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+}
+
+// Read expenses
+function readExpenses() {
+  if (!fs.existsSync(DATA_FILE)) {
+    return [];
+  }
+  const data = fs.readFileSync(DATA_FILE, 'utf8');
+  return JSON.parse(data);
+}
+
+// Write expenses
+function writeExpenses(expenses) {
+  ensureDirs();
+  fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
+}
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -17,12 +43,14 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    const expenses = await redis.get('expenses') || [];
+    const expenses = readExpenses();
     res.status(200).json(expenses);
     return;
   }
 
   if (req.method === 'POST') {
+    ensureDirs();
+    
     const body = req.body;
     const { amount, type, description, date, job, receiptFilename } = body;
     
@@ -31,7 +59,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const expenses = await redis.get('expenses') || [];
+    const expenses = readExpenses();
     
     const newExpense = {
       id: Date.now().toString(),
@@ -45,7 +73,7 @@ export default async function handler(req, res) {
     };
 
     expenses.push(newExpense);
-    await redis.set('expenses', expenses);
+    writeExpenses(expenses);
 
     res.status(201).json(newExpense);
     return;
