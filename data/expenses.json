@@ -1,24 +1,3 @@
-[
-  {
-    "id": "1771605000000",
-    "amount": 125,
-    "type": "parking",
-    "description": "Parking at 健力工業大廈",
-    "date": "2025-11-28",
-    "job": "Steph song",
-    "receiptFilename": "receipt_2025-11-28_steph-song.jpg",
-    "receiptPath": "/receipts/receipt_2025-11-28_steph-song.jpg",
-    "createdAt": "2026-02-20T17:10:00.000Z"
-  },
-  {
-    "id": "1771605100000",
-    "amount": 211,
-    "type": "dining",
-    "description": "Lunch at 亞參 (新都埕) - Hainanese chicken rice",
-    "date": "2026-02-16",
-    "job": "General",
-    "receiptFilename": "receipt_2026-02-16_dining.jpg",
-    "receiptPath": "/receipts/receipt_2026-02-16_dining.jpg",
-    "createdAt": "2026-02-20T17:15:00.000Z"
-  }
-]
+[{"amount":125,"createdAt":"2026-02-20T17:10:00.000Z","date":"2025-11-28","description":"Parking at 健力工業大廈","id":"1771605000000","job":"Steph song","receiptFilename":"receipt_2025-11-28_steph-song.jpg","receiptPath":"/receipts/receipt_2025-11-28_steph-song.jpg","type":"parking"},{"amount":211,"createdAt":"2026-02-20T17:15:00.000Z","date":"2026-02-16","description":"Lunch at 亞參 (新都埕) - Hainanese chicken rice","id":"1771605100000","job":"General","receiptFilename":"receipt_2026-02-16_dining.jpg","receiptPath":"/receipts/receipt_2026-02-16_dining.jpg","type":"dining"},{"amount":462,"createdAt":"2026-02-21T04:09:00.000Z","date":"2026-02-20","description":"摺食工房(將軍澳)","id":"1771646940000","job":"General","receiptFilename":"receipt_2026-02-20_dining_摺食工房.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-20_dining_摺食工房.jpg","type":"dining"},{"amount":254,"createdAt":"2026-02-21T04:11:00.000Z","date":"2026-02-16","description":"東南亞冰室(將軍澳)","id":"1771647100000","job":"General","receiptFilename":"receipt_2026-02-16_dining_東南亞冰室.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-16_dining_東南亞冰室.jpg","type":"dining"},{"amount":367,"createdAt":"2026-02-21T04:57:00.000Z","date":"2026-02-21","description":"海王漁港(新都城二期)","id":"1771669200000","job":"General","receiptFilename":"receipt_2026-02-21_dining_海王漁港.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-21_dining_海王漁港.jpg","type":"dining"},{"amount":43,"createdAt":"2026-02-21T09:06:00.000Z","date":"2026-02-12","description":"敏華冰廳(太初)","id":"1771664300000","job":"General","receiptFilename":"receipt_2026-02-12_dining_敏華冰廳.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-12_dining_敏華冰廳.jpg","type":"dining"},{"amount":99,"createdAt":"2026-02-21T09:13:00.000Z","date":"2026-02-19","description":"檀島咖啡餅店(將軍澳)","id":"1771665120000","job":"General","receiptFilename":"receipt_2026-02-19_dining_檀島咖啡餅店.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-19_dining_檀島咖啡餅店.jpg","type":"dining"},{"amount":88,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 7","id":"1771691983000","job":"Test","receiptFilename":"test-receipt-7.jpg","receiptPath":"/receipts/test-receipt-7.jpg","type":"dining"},{"amount":99,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 8","id":"1771691984000","job":"Test","receiptFilename":"test-receipt-8.jpg","receiptPath":"/receipts/test-receipt-8.jpg","type":"dining"},{"amount":111,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 9","id":"1771691985000","job":"Test","receiptFilename":"test-receipt-9.jpg","receiptPath":"/receipts/test-receipt-9.jpg","type":"dining"},{"amount":124,"createdAt":"2026-02-21T17:10:42.650Z","date":"2026-02-21","description":"肉のヤマ牛 (Yakiniku Yamagyu)","id":"1771693842650","job":"General","receiptFilename":"receipt_2026-02-21_dining_山牛.jpg","receiptPath":"https://res.cloudinary.com/dwfekgypq/image/upload/v1771693842/expense-receipts/receipt-1771693842039.jpg","type":"dining"},{"amount":68,"createdAt":"2026-02-22T14:03:00.000Z","date":"2026-02-22","description":"翠華（Tsui Wah）","id":"1771735268000","job":"General","receiptFilename":"receipt_2026-02-22_dining_翠華.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-22_dining_翠華.jpg","type":"dining"},{"amount":50,"createdAt":"2026-02-26T13:20:00.000Z","date":"2026-02-26","description":"檀島咖啡餅店(將軍澳)","id":"1740576000000","job":"General","receiptFilename":"receipt_2026-02-26_honolulu.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-26_honolulu.jpg","type":"dining"},{"amount":19,"createdAt":"2026-02-26T13:30:00.000Z","date":"2026-01-01","description":"Maritime Square 2 Parking","id":"1735766760000","job":"General","receiptFilename":"receipt_2026-01-01_parking.jpg","receiptPath":"/receipts/2026-01/receipt_2026-01-01_parking.jpg","type":"parking"},
+{"amount":105,"createdAt":"2026-02-28T14:02:00.000Z","date":"2026-01-19","description":"Two Harbour Square Parking","id":"1740751320000","job":"General","receiptFilename":"file_47---c478af0e-d1c6-4e2a-8d60-ac0f4ddb1557.jpg","receiptPath":"/receipts/2026-01/receipt_2026-01-19_two_harbour.jpg","type":"parking"},
+{"amount":118,"createdAt":"2026-02-28T15:20:00.000Z","date":"2026-02-26","description":"上海真美豆漿大王","id":"1740756000000","job":"General","receiptFilename":"file_48---e682cfd4-88a8-4722-a22b-64fd07fe4e29.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-26_shanghai_zhenmei.jpg","type":"dining"}]
