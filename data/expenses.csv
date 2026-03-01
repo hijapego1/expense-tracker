@@ -1,0 +1,8 @@
+id,date,amount,type,description,job,receiptFilename
+1771605000000,2025-11-28,125,parking,"Parking at 健力工業大廈","Steph song",receipt_2025-11-28_steph-song.jpg
+1771605100000,2026-02-16,211,dining,"Lunch at 亞參 (新都埕) - Hainanese chicken rice",General,receipt_2026-02-16_dining.jpg
+1771646940000,2026-02-20,462,dining,"摺食工房(將軍澳)",General,receipt_2026-02-20_dining_摺食工房.jpg
+1771647100000,2026-02-16,254,dining,"東南亞冰室(將軍澳)",General,receipt_2026-02-16_dining_東南亞冰室.jpg
+1771669200000,2026-02-21,367,dining,"海王漁港(新都城二期)",General,receipt_2026-02-21_dining_海王漁港.jpg
+1771664300000,2026-02-12,43,dining,"敏華冰廳(太初)",General,receipt_2026-02-12_dining_敏華冰廳.jpg
+1771665120000,2026-02-19,99,dining,"檀島咖啡餅店(將軍澳)",General,receipt_2026-02-19_dining_檀島咖啡餅店.jpg
