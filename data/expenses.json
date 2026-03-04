@@ -1,3 +1,189 @@
-[{"amount":125,"createdAt":"2026-02-20T17:10:00.000Z","date":"2025-11-28","description":"Parking at 健力工業大廈","id":"1771605000000","job":"Steph song","receiptFilename":"receipt_2025-11-28_steph-song.jpg","receiptPath":"/receipts/receipt_2025-11-28_steph-song.jpg","type":"parking"},{"amount":211,"createdAt":"2026-02-20T17:15:00.000Z","date":"2026-02-16","description":"Lunch at 亞參 (新都埕) - Hainanese chicken rice","id":"1771605100000","job":"General","receiptFilename":"receipt_2026-02-16_dining.jpg","receiptPath":"/receipts/receipt_2026-02-16_dining.jpg","type":"dining"},{"amount":462,"createdAt":"2026-02-21T04:09:00.000Z","date":"2026-02-20","description":"摺食工房(將軍澳)","id":"1771646940000","job":"General","receiptFilename":"receipt_2026-02-20_dining_摺食工房.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-20_dining_摺食工房.jpg","type":"dining"},{"amount":254,"createdAt":"2026-02-21T04:11:00.000Z","date":"2026-02-16","description":"東南亞冰室(將軍澳)","id":"1771647100000","job":"General","receiptFilename":"receipt_2026-02-16_dining_東南亞冰室.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-16_dining_東南亞冰室.jpg","type":"dining"},{"amount":367,"createdAt":"2026-02-21T04:57:00.000Z","date":"2026-02-21","description":"海王漁港(新都城二期)","id":"1771669200000","job":"General","receiptFilename":"receipt_2026-02-21_dining_海王漁港.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-21_dining_海王漁港.jpg","type":"dining"},{"amount":43,"createdAt":"2026-02-21T09:06:00.000Z","date":"2026-02-12","description":"敏華冰廳(太初)","id":"1771664300000","job":"General","receiptFilename":"receipt_2026-02-12_dining_敏華冰廳.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-12_dining_敏華冰廳.jpg","type":"dining"},{"amount":99,"createdAt":"2026-02-21T09:13:00.000Z","date":"2026-02-19","description":"檀島咖啡餅店(將軍澳)","id":"1771665120000","job":"General","receiptFilename":"receipt_2026-02-19_dining_檀島咖啡餅店.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-19_dining_檀島咖啡餅店.jpg","type":"dining"},{"amount":88,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 7","id":"1771691983000","job":"Test","receiptFilename":"test-receipt-7.jpg","receiptPath":"/receipts/test-receipt-7.jpg","type":"dining"},{"amount":99,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 8","id":"1771691984000","job":"Test","receiptFilename":"test-receipt-8.jpg","receiptPath":"/receipts/test-receipt-8.jpg","type":"dining"},{"amount":111,"createdAt":"2026-02-21T16:39:00.000Z","date":"2026-02-21","description":"Test Receipt 9","id":"1771691985000","job":"Test","receiptFilename":"test-receipt-9.jpg","receiptPath":"/receipts/test-receipt-9.jpg","type":"dining"},{"amount":124,"createdAt":"2026-02-21T17:10:42.650Z","date":"2026-02-21","description":"肉のヤマ牛 (Yakiniku Yamagyu)","id":"1771693842650","job":"General","receiptFilename":"receipt_2026-02-21_dining_山牛.jpg","receiptPath":"https://res.cloudinary.com/dwfekgypq/image/upload/v1771693842/expense-receipts/receipt-1771693842039.jpg","type":"dining"},{"amount":68,"createdAt":"2026-02-22T14:03:00.000Z","date":"2026-02-22","description":"翠華（Tsui Wah）","id":"1771735268000","job":"General","receiptFilename":"receipt_2026-02-22_dining_翠華.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-22_dining_翠華.jpg","type":"dining"},{"amount":50,"createdAt":"2026-02-26T13:20:00.000Z","date":"2026-02-26","description":"檀島咖啡餅店(將軍澳)","id":"1740576000000","job":"General","receiptFilename":"receipt_2026-02-26_honolulu.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-26_honolulu.jpg","type":"dining"},{"amount":19,"createdAt":"2026-02-26T13:30:00.000Z","date":"2026-01-01","description":"Maritime Square 2 Parking","id":"1735766760000","job":"General","receiptFilename":"receipt_2026-01-01_parking.jpg","receiptPath":"/receipts/2026-01/receipt_2026-01-01_parking.jpg","type":"parking"},
-{"amount":105,"createdAt":"2026-02-28T14:02:00.000Z","date":"2026-01-19","description":"Two Harbour Square Parking","id":"1740751320000","job":"General","receiptFilename":"file_47---c478af0e-d1c6-4e2a-8d60-ac0f4ddb1557.jpg","receiptPath":"/receipts/2026-01/receipt_2026-01-19_two_harbour.jpg","type":"parking"},
-{"amount":118,"createdAt":"2026-02-28T15:20:00.000Z","date":"2026-02-26","description":"上海真美豆漿大王","id":"1740756000000","job":"General","receiptFilename":"file_48---e682cfd4-88a8-4722-a22b-64fd07fe4e29.jpg","receiptPath":"/receipts/2026-02/receipt_2026-02-26_shanghai_zhenmei.jpg","type":"dining"}]
+[
+  {
+    "amount": 125,
+    "createdAt": "2026-02-20T17:10:00.000Z",
+    "date": "2025-11-28",
+    "description": "Parking at \u5065\u529b\u5de5\u696d\u5927\u5ec8",
+    "id": "1771605000000",
+    "job": "Steph song",
+    "receiptFilename": "receipt_2025-11-28_steph-song.jpg",
+    "receiptPath": "/receipts/receipt_2025-11-28_steph-song.jpg",
+    "type": "parking"
+  },
+  {
+    "amount": 211,
+    "createdAt": "2026-02-20T17:15:00.000Z",
+    "date": "2026-02-16",
+    "description": "Lunch at \u4e9e\u53c3 (\u65b0\u90fd\u57d5) - Hainanese chicken rice",
+    "id": "1771605100000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-16_dining.jpg",
+    "receiptPath": "/receipts/receipt_2026-02-16_dining.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 462,
+    "createdAt": "2026-02-21T04:09:00.000Z",
+    "date": "2026-02-20",
+    "description": "\u647a\u98df\u5de5\u623f(\u5c07\u8ecd\u6fb3)",
+    "id": "1771646940000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-20_dining_\u647a\u98df\u5de5\u623f.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-20_dining_\u647a\u98df\u5de5\u623f.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 254,
+    "createdAt": "2026-02-21T04:11:00.000Z",
+    "date": "2026-02-16",
+    "description": "\u6771\u5357\u4e9e\u51b0\u5ba4(\u5c07\u8ecd\u6fb3)",
+    "id": "1771647100000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-16_dining_\u6771\u5357\u4e9e\u51b0\u5ba4.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-16_dining_\u6771\u5357\u4e9e\u51b0\u5ba4.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 367,
+    "createdAt": "2026-02-21T04:57:00.000Z",
+    "date": "2026-02-21",
+    "description": "\u6d77\u738b\u6f01\u6e2f(\u65b0\u90fd\u57ce\u4e8c\u671f)",
+    "id": "1771669200000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-21_dining_\u6d77\u738b\u6f01\u6e2f.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-21_dining_\u6d77\u738b\u6f01\u6e2f.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 43,
+    "createdAt": "2026-02-21T09:06:00.000Z",
+    "date": "2026-02-12",
+    "description": "\u654f\u83ef\u51b0\u5ef3(\u592a\u521d)",
+    "id": "1771664300000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-12_dining_\u654f\u83ef\u51b0\u5ef3.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-12_dining_\u654f\u83ef\u51b0\u5ef3.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 99,
+    "createdAt": "2026-02-21T09:13:00.000Z",
+    "date": "2026-02-19",
+    "description": "\u6a80\u5cf6\u5496\u5561\u9905\u5e97(\u5c07\u8ecd\u6fb3)",
+    "id": "1771665120000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-19_dining_\u6a80\u5cf6\u5496\u5561\u9905\u5e97.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-19_dining_\u6a80\u5cf6\u5496\u5561\u9905\u5e97.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 88,
+    "createdAt": "2026-02-21T16:39:00.000Z",
+    "date": "2026-02-21",
+    "description": "Test Receipt 7",
+    "id": "1771691983000",
+    "job": "Test",
+    "receiptFilename": "test-receipt-7.jpg",
+    "receiptPath": "/receipts/test-receipt-7.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 99,
+    "createdAt": "2026-02-21T16:39:00.000Z",
+    "date": "2026-02-21",
+    "description": "Test Receipt 8",
+    "id": "1771691984000",
+    "job": "Test",
+    "receiptFilename": "test-receipt-8.jpg",
+    "receiptPath": "/receipts/test-receipt-8.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 111,
+    "createdAt": "2026-02-21T16:39:00.000Z",
+    "date": "2026-02-21",
+    "description": "Test Receipt 9",
+    "id": "1771691985000",
+    "job": "Test",
+    "receiptFilename": "test-receipt-9.jpg",
+    "receiptPath": "/receipts/test-receipt-9.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 124,
+    "createdAt": "2026-02-21T17:10:42.650Z",
+    "date": "2026-02-21",
+    "description": "\u8089\u306e\u30e4\u30de\u725b (Yakiniku Yamagyu)",
+    "id": "1771693842650",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-21_dining_\u5c71\u725b.jpg",
+    "receiptPath": "https://res.cloudinary.com/dwfekgypq/image/upload/v1771693842/expense-receipts/receipt-1771693842039.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 68,
+    "createdAt": "2026-02-22T14:03:00.000Z",
+    "date": "2026-02-22",
+    "description": "\u7fe0\u83ef\uff08Tsui Wah\uff09",
+    "id": "1771735268000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-22_dining_\u7fe0\u83ef.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-22_dining_\u7fe0\u83ef.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 50,
+    "createdAt": "2026-02-26T13:20:00.000Z",
+    "date": "2026-02-26",
+    "description": "\u6a80\u5cf6\u5496\u5561\u9905\u5e97(\u5c07\u8ecd\u6fb3)",
+    "id": "1740576000000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-02-26_honolulu.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-26_honolulu.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 19,
+    "createdAt": "2026-02-26T13:30:00.000Z",
+    "date": "2026-01-01",
+    "description": "Maritime Square 2 Parking",
+    "id": "1735766760000",
+    "job": "General",
+    "receiptFilename": "receipt_2026-01-01_parking.jpg",
+    "receiptPath": "/receipts/2026-01/receipt_2026-01-01_parking.jpg",
+    "type": "parking"
+  },
+  {
+    "amount": 105,
+    "createdAt": "2026-02-28T14:02:00.000Z",
+    "date": "2026-01-19",
+    "description": "Two Harbour Square Parking",
+    "id": "1740751320000",
+    "job": "General",
+    "receiptFilename": "file_47---c478af0e-d1c6-4e2a-8d60-ac0f4ddb1557.jpg",
+    "receiptPath": "/receipts/2026-01/receipt_2026-01-19_two_harbour.jpg",
+    "type": "parking"
+  },
+  {
+    "amount": 118,
+    "createdAt": "2026-02-28T15:20:00.000Z",
+    "date": "2026-02-26",
+    "description": "\u4e0a\u6d77\u771f\u7f8e\u8c46\u6f3f\u5927\u738b",
+    "id": "1740756000000",
+    "job": "General",
+    "receiptFilename": "file_48---e682cfd4-88a8-4722-a22b-64fd07fe4e29.jpg",
+    "receiptPath": "/receipts/2026-02/receipt_2026-02-26_shanghai_zhenmei.jpg",
+    "type": "dining"
+  },
+  {
+    "amount": 272,
+    "createdAt": "2026-03-04T13:36:49.000Z",
+    "date": "2026-02-26",
+    "description": "\u4e0a\u6d77\u771f\u7f8e\u8c46\u6f3f\u5927\u738b (Shanghai Zhenmei)",
+    "id": 1772602609176,
+    "job": "General",
+    "receiptFilename": "file_64---d02f1855-f346-46de-87ec-83980b8ea2db.jpg",
+    "receiptPath": "/receipts/2026-02/file_64---d02f1855-f346-46de-87ec-83980b8ea2db.jpg",
+    "type": "dining"
+  }
+]
